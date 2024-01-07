@@ -4,4 +4,5 @@ export interface Employee {
   team: string;
   position: string;
   empId: number;
+  level?: number;
 }

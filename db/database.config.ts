@@ -12,13 +12,14 @@ const path = PATH_TO_RUN || `migrations`;
 
 export const dbConfig: DataSourceOptions = {
   type: 'mysql',
-  host: 'localhost',
+  host: MYSQL_HOST,
   port: 3306,
-  username: 'root',
-  password: 'Azar@1307',
-  database: 'organization_db',
+  username: MYSQL_USER,
+  password: MYSQL_PASSWORD,
+  database: MYSQL_DATABASE,
   entities: [join(process.cwd(), 'dist/**/*.entity.js')],
-  synchronize: true,
+  // synchronize: true,
+  migrations: [`dist/db/${path}/*.js`],
 };
 
 export default new DataSource(dbConfig);

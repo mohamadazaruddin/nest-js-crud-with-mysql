@@ -5,10 +5,30 @@ import { Employee } from './employess.model';
 export class EmployeesService {
   private employees: Employee[] = [];
   getAllEmployees() {
-    return this.employees;
+    return this.organizeDataByLevel(this.employees);
   }
 
-  createTask({ fullName, team, position, empId }: Employee) {
+  //js function
+  organizeDataByLevel(inputData, currentLevel = 1) {
+    const result = [];
+    const employeesAtCurrentLevel = inputData.filter(
+      (employee) => employee.level === currentLevel,
+    );
+    employeesAtCurrentLevel.forEach((employee) => {
+      const subordinateData = this.organizeDataByLevel(
+        inputData,
+        currentLevel + 1,
+      );
+      if (subordinateData.length > 0) {
+        employee.subordinates = subordinateData;
+      }
+      result.push(employee);
+    });
+
+    return result;
+  }
+
+  createTask({ fullName, team, position, empId, level }: Employee) {
     const id = Number(new Date());
     const employee: Employee = {
       id,
@@ -16,6 +36,7 @@ export class EmployeesService {
       team,
       position,
       empId,
+      level,
     };
     this.employees.push(employee);
     return employee;
